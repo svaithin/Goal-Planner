@@ -1,5 +1,6 @@
 package com.labs.svaithin.goalplanner_v0_01;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ import com.labs.svaithin.goalplanner_v0_01.db.TaskContract;
 import com.labs.svaithin.goalplanner_v0_01.db.TaskDbHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class milestone_add extends AppCompatActivity {
 
@@ -31,6 +33,8 @@ public class milestone_add extends AppCompatActivity {
     private ListView mTaskListView;
     private TaskDbHelper mHelper;
     Integer goalID;
+    HashMap<Integer, Integer> pos_id_map;
+    HashMap<Integer, Integer> pos_done_map;
 
     //milestone = new ArrayList<String>();
 
@@ -39,12 +43,8 @@ public class milestone_add extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_milestone_add);
 
-
-
+        // Set Goal As Text View
         setGoal();
-        //Log.d("id",goal);
-
-
 
         lvItems = (ListView) findViewById(R.id.lvItems1);
         milestone = new ArrayList<String>();
@@ -54,10 +54,57 @@ public class milestone_add extends AppCompatActivity {
         milestoneAdapter =  new ArrayAdapter<String>(this,
                 R.layout.milestone_row,R.id.row,milestone);
         lvItems.setAdapter(milestoneAdapter);
-        milestone.add("First Item");
-        milestone.add("Second Item");
+        //milestone.add("First Item");
+        //milestone.add("Second Item");
+        updateUI();
         milestonlistener();
     }
+
+    private void updateUI() {
+        ArrayList<String> taskList = new ArrayList<>();
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        if (pos_id_map == null) {
+            pos_id_map = new HashMap<Integer, Integer>();
+        }
+        if (pos_done_map == null) {
+            pos_done_map = new HashMap<Integer, Integer>();
+        }
+
+        //mySimpleNewAdapter.clear();
+        int row = 0;
+        Cursor cursor = db.query(TaskContract.TaskEntry.MILESTONE,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.MILESTONETITLE,
+                        TaskContract.TaskEntry.MGOALID,TaskContract.TaskEntry.MILESTONEDONE},
+                        ""+TaskContract.TaskEntry.MGOALID+" = ?",new String[]{goalID.toString()}, null, null, null);
+        while (cursor.moveToNext()) {
+            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.MILESTONETITLE);
+            //mySimpleNewAdapter.add(cursor.getString(idx));
+            taskList.add(cursor.getString(idx));
+            int idt = cursor.getColumnIndex(TaskContract.TaskEntry._ID);
+            pos_id_map.put(row, cursor.getInt(idt));
+            int idd = cursor.getColumnIndex(TaskContract.TaskEntry.MILESTONEDONE);
+            pos_done_map.put(row, cursor.getInt(idd));
+            row++;
+            Log.d(TAG, "row" + pos_id_map);
+
+        }
+
+
+        milestoneAdapter.clear();
+        milestoneAdapter.addAll(taskList);
+        milestoneAdapter.notifyDataSetChanged();
+        //itemsAdapter.addAll(taskList);
+
+        //mySimpleNewAdapter.clear();
+        //mySimpleNewAdapter.addAll(taskList);
+        /*mySimpleNewAdapter.addAll(taskList);*/
+        //mySimpleNewAdapter.notifyDataSetChanged();
+
+
+        cursor.close();
+        db.close();
+    }
+
 
     public void setGoal(){
 
@@ -94,10 +141,22 @@ public class milestone_add extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String task = String.valueOf(taskEditText.getText());
-                        //Log.d(TAG, "Task to add: " + task);
-                        //updateMilestone(task);
+
                         milestoneAdapter.add(task);
-                        //Log.d(TAG,"milestone"+milestone);
+                        // Adding to DB
+
+                        SQLiteDatabase db = mHelper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        values.put(TaskContract.TaskEntry.MILESTONETITLE, task);
+                        values.put(TaskContract.TaskEntry.MGOALID, goalID);
+                        values.put(TaskContract.TaskEntry.MILESTONEDONE,0);
+                        db.insertWithOnConflict(TaskContract.TaskEntry.MILESTONE,
+                                null,
+                                values,
+                                SQLiteDatabase.CONFLICT_REPLACE);
+                        db.close();
+
+
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -120,17 +179,30 @@ public class milestone_add extends AppCompatActivity {
                                 .setPositiveButton( "Save", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         String task = String.valueOf(taskEditText.getText());
-                                        milestone.remove(pos);
-                                        milestone.add(pos,task);
-                                        lvItems.setAdapter(milestoneAdapter);
+                                        SQLiteDatabase update_db = mHelper.getWritableDatabase();
+
+                                        //update_db.update(TaskContract.TaskEntry.GOAL, )
+                                        update_db.execSQL("update " + TaskContract.TaskEntry.MILESTONE +
+                                                " set " + TaskContract.TaskEntry.MILESTONETITLE + " = '" +
+                                                task.toString() + "' where _id = " + pos_id_map.get(pos));
+
+                                        updateUI();
+                                        update_db.close();
+                                        //lvItems.setAdapter(milestoneAdapter);
                                         Log.d( "AlertDialog", "Positive" );
                                     }
                                 })
                                 .setNegativeButton( "Delete", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Log.d( "AlertDialog", "Negative" );
-                                        milestone.remove(pos);
-                                        lvItems.setAdapter(milestoneAdapter);
+
+                                        SQLiteDatabase remove_db = mHelper.getWritableDatabase();
+                                        remove_db.execSQL("delete from " + TaskContract.TaskEntry.MILESTONE +
+                                                " where _id =" + pos_id_map.get(pos));
+                                        remove_db.close();
+                                        updateUI();
+                                        //milestone.remove(pos);
+                                        //lvItems.setAdapter(milestoneAdapter);
                                     }
                                 } )
                                 .show();
