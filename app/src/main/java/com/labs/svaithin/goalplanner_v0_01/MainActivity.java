@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
@@ -57,12 +58,7 @@ public class MainActivity extends AppCompatActivity {
         mHelper = new TaskDbHelper(this);
 
 
-        lvItems = (ListView) findViewById(R.id.lvItems);
-        items = new ArrayList<String>();
-        itemsAdapter = new ArrayAdapter<String>(this,
-                R.layout.milestone_row, R.id.row, items);
 
-        lvItems.setAdapter(itemsAdapter);
         //mySimpleNewAdapter = new MySimpleStringAdapter(getApplicationContext(), R.layout.milestone_row, items);
         //lvItems.setAdapter(mySimpleNewAdapter);
 
@@ -76,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateUI() {
+
+        if(lvItems == null) {
+            lvItems = (ListView) findViewById(R.id.lvItems);
+        }
+        if(items ==null) {
+            items = new ArrayList<String>();
+        }
+
+
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
         if (map == null) {
@@ -103,6 +108,32 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        if(itemsAdapter == null) {
+            itemsAdapter = new ArrayAdapter<String>(this,
+                    R.layout.milestone_row, R.id.row, items) {
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+
+                    TextView textView = (TextView) view.findViewById(R.id.row);
+                    Log.d(TAG,"postiton"+position);
+
+                    if (doneMap.get(position) > 0) {
+
+            /*YOUR CHOICE OF COLOR*/
+                        textView.setTextColor(Color.BLUE);
+                        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }else {
+                        textView.setTextColor(Color.RED);
+                    }
+
+                    return view;
+                }
+            };
+        }
+
+        lvItems.setAdapter(itemsAdapter);
 
         itemsAdapter.clear();
         itemsAdapter.addAll(taskList);
@@ -165,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                                         //items.add(pos,task);
                                         //lvItems.setAdapter(itemsAdapter);
                                         Log.d("AlertDialog", "Positive");
+                                        updateUI();
                                     }
                                 })
                                 .setNeutralButton("Completed", new DialogInterface.OnClickListener() {
@@ -191,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                                                     " = 0" + " where _id = " + map.get(pos));
                                         }
                                         Log.d("AlertDialog", "Positive");
+                                        updateUI();
 
 
                                     }
