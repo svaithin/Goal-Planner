@@ -126,13 +126,6 @@ public class milestone_add extends AppCompatActivity {
         milestoneAdapter.clear();
         milestoneAdapter.addAll(taskList);
         milestoneAdapter.notifyDataSetChanged();
-        //itemsAdapter.addAll(taskList);
-
-        //mySimpleNewAdapter.clear();
-        //mySimpleNewAdapter.addAll(taskList);
-        /*mySimpleNewAdapter.addAll(taskList);*/
-        //mySimpleNewAdapter.notifyDataSetChanged();
-
 
         cursor.close();
         db.close();
@@ -254,18 +247,15 @@ public class milestone_add extends AppCompatActivity {
                         SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
                         if (pos_done_map.get(pos) == 0) {
-                            //item1.setPaintFlags(item1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                            //SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
-                            //update_db.update(TaskContract.TaskEntry.GOAL, )
                             update_db.execSQL("update " + TaskContract.TaskEntry.MILESTONE +
                                     " set " + TaskContract.TaskEntry.MILESTONEDONE +
                                     " = 1" + " where _id = " + pos_id_map.get(pos));
 
                         } else {
                             //item1.setPaintFlags(item1.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                            update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
-                                    " set " + TaskContract.TaskEntry.GOALDONE +
+                            update_db.execSQL("update " + TaskContract.TaskEntry.MILESTONE +
+                                    " set " + TaskContract.TaskEntry.MILESTONEDONE +
                                     " = 0" + " where _id = " + pos_id_map.get(pos));
                         }
                         updateUI();
