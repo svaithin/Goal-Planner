@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -28,7 +30,7 @@ public class milestone_add extends AppCompatActivity {
     private ArrayList<String> milestone;
     private ArrayAdapter<String> milestoneAdapter;
     private ListView lvItems;
-    private String TAG = "Mainactivity";
+    private String TAG = "Milestone";
     public final static String GOAL = "com.example.myfirstapp.MESSAGE";
     private ListView mTaskListView;
     private TaskDbHelper mHelper;
@@ -46,14 +48,7 @@ public class milestone_add extends AppCompatActivity {
         // Set Goal As Text View
         setGoal();
 
-        lvItems = (ListView) findViewById(R.id.lvItems1);
-        milestone = new ArrayList<String>();
-       // milestoneAdapter = new ArrayAdapter<String>(this,
-       //         android.R.layout.simple_list_item_1, milestone);
 
-        milestoneAdapter =  new ArrayAdapter<String>(this,
-                R.layout.milestone_row,R.id.row,milestone);
-        lvItems.setAdapter(milestoneAdapter);
         //milestone.add("First Item");
         //milestone.add("Second Item");
         updateUI();
@@ -62,6 +57,14 @@ public class milestone_add extends AppCompatActivity {
 
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
+        if(lvItems ==null) {
+            lvItems = (ListView) findViewById(R.id.lvItems1);
+        }
+        if(milestone == null) {
+            milestone = new ArrayList<String>();
+        }
+
+
         SQLiteDatabase db = mHelper.getReadableDatabase();
         if (pos_id_map == null) {
             pos_id_map = new HashMap<Integer, Integer>();
@@ -89,6 +92,36 @@ public class milestone_add extends AppCompatActivity {
 
         }
 
+        if(milestoneAdapter == null) {
+            milestoneAdapter = new ArrayAdapter<String>(this,
+                    R.layout.milestone_row, R.id.row, milestone) {
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+
+                    TextView textView = (TextView) view.findViewById(R.id.row);
+                    //Log.d(TAG, "postiton" + position);
+                    //Log.d(TAG, "pos_done_map:" + pos_done_map);
+
+                    if (pos_done_map.get(position) > 0) {
+
+            /*YOUR CHOICE OF COLOR*/
+                        textView.setTextColor(Color.BLUE);
+                        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    } else {
+                        textView.setTextColor(Color.RED);
+                    }
+
+                    return view;
+                }
+            };
+        }
+
+
+
+        lvItems.setAdapter(milestoneAdapter);
+
 
         milestoneAdapter.clear();
         milestoneAdapter.addAll(taskList);
@@ -103,6 +136,7 @@ public class milestone_add extends AppCompatActivity {
 
         cursor.close();
         db.close();
+        Log.d(TAG,"endof UI");
     }
 
 
@@ -217,17 +251,24 @@ public class milestone_add extends AppCompatActivity {
                                             View item, final int pos, long id) {
                         Log.d(TAG,"inside milestone click");
                         //Logic to strike through
+                        SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
-                        TextView item1 = (TextView) item.findViewById(R.id.row);
+                        if (pos_done_map.get(pos) == 0) {
+                            //item1.setPaintFlags(item1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                            //SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
-                        if(item1.getPaintFlags() != Paint.STRIKE_THRU_TEXT_FLAG ) {
-                            item1.setPaintFlags(item1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                            //update_db.update(TaskContract.TaskEntry.GOAL, )
+                            update_db.execSQL("update " + TaskContract.TaskEntry.MILESTONE +
+                                    " set " + TaskContract.TaskEntry.MILESTONEDONE +
+                                    " = 1" + " where _id = " + pos_id_map.get(pos));
+
+                        } else {
+                            //item1.setPaintFlags(item1.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                            update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
+                                    " set " + TaskContract.TaskEntry.GOALDONE +
+                                    " = 0" + " where _id = " + pos_id_map.get(pos));
                         }
-                        else {
-                            item1.setPaintFlags(item1.getPaintFlags() &  (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                        }
-
-
+                        updateUI();
 
                         return ;
                     }

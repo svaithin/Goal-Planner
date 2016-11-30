@@ -176,6 +176,13 @@ public class MainActivity extends AppCompatActivity {
                                                    final View item, final int pos, long id) {
                         final EditText taskEditText = new EditText(getApplicationContext());
                         taskEditText.setText(items.get(pos));
+                        String completeButtonName = new String();
+                        if (doneMap.get(pos) == 0) {
+                            completeButtonName = "Completed";
+                        }
+                        else {
+                            completeButtonName = "Incomplete";
+                        }
                         new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("Goal")
                                 .setView(taskEditText)
@@ -199,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                                         updateUI();
                                     }
                                 })
-                                .setNeutralButton("Completed", new DialogInterface.OnClickListener() {
+                                .setNeutralButton(completeButtonName, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         // write code to strike text
 
@@ -208,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                                         SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
                                         if (doneMap.get(pos) == 0) {
-                                            item1.setPaintFlags(item1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                            //item1.setPaintFlags(item1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                                             //SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
                                             //update_db.update(TaskContract.TaskEntry.GOAL, )
@@ -217,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                                                     " = 1" + " where _id = " + map.get(pos));
 
                                         } else {
-                                            item1.setPaintFlags(item1.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                                            //item1.setPaintFlags(item1.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                                             update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
                                                     " set " + TaskContract.TaskEntry.GOALDONE +
                                                     " = 0" + " where _id = " + map.get(pos));
@@ -254,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), milestone_add.class);
                         intent.putExtra("ID", map.get(pos));
                         startActivity(intent);
-                        return;
+
                     }
 
                 });
