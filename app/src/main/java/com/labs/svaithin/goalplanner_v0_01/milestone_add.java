@@ -182,6 +182,8 @@ public class milestone_add extends AppCompatActivity {
                                 values,
                                 SQLiteDatabase.CONFLICT_REPLACE);
                         db.close();
+                        updateUI();
+                        Log.d(TAG,"Added to DB");
 
 
                     }
@@ -189,6 +191,8 @@ public class milestone_add extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+        Log.d(TAG,"calling updateui after adding");
+
     }
 
     private void milestonlistener(){

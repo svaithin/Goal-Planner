@@ -57,12 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         mHelper = new TaskDbHelper(this);
 
-
-
-        //mySimpleNewAdapter = new MySimpleStringAdapter(getApplicationContext(), R.layout.milestone_row, items);
-        //lvItems.setAdapter(mySimpleNewAdapter);
-
-
         updateUI();
         setupListViewListener();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
