@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -106,10 +107,15 @@ public class milestone_add extends AppCompatActivity {
                     if (pos_done_map.get(position) > 0) {
 
             /*YOUR CHOICE OF COLOR*/
-                        textView.setTextColor(Color.BLUE);
+                        //textView.setTextColor(Color.BLUE);
+                        textView.setTextColor(Color.BLACK);
+                        textView.setTypeface(null, Typeface.ITALIC);
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     } else {
-                        textView.setTextColor(Color.RED);
+                        textView.setTextColor(Color.BLACK);
+                        textView.setTypeface(null, Typeface.NORMAL);
+                        //textView.setTextColor(Color.RED);
+                        textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     }
 
                     return view;
@@ -201,6 +207,7 @@ public class milestone_add extends AppCompatActivity {
                                                    View item, final int pos, long id) {
                         final EditText taskEditText = new EditText(getApplicationContext());
                         taskEditText.setText(milestone.get(pos));
+                        taskEditText.setTextColor(Color.BLACK);
                         new AlertDialog.Builder( milestone_add.this )
                                 .setTitle( "Milestone" )
                                 .setView(taskEditText)

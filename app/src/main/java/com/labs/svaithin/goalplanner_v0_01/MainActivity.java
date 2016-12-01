@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -116,10 +117,12 @@ public class MainActivity extends AppCompatActivity {
                     if (doneMap.get(position) > 0) {
 
             /*YOUR CHOICE OF COLOR*/
-                        textView.setTextColor(Color.BLUE);
+                        textView.setTextColor(Color.BLACK);
+                        textView.setTypeface(null, Typeface.ITALIC);
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     }else {
-                        textView.setTextColor(Color.RED);
+                        textView.setTextColor(Color.BLACK);
+                        textView.setTypeface(null, Typeface.NORMAL);
                         textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     }
 
@@ -164,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
                                                    final View item, final int pos, long id) {
                         final EditText taskEditText = new EditText(getApplicationContext());
                         taskEditText.setText(items.get(pos));
+                        taskEditText.setTextColor(Color.BLACK);
+                        Log.d(TAG,"edit text:"+items.get(pos));
                         String completeButtonName = new String();
                         if (doneMap.get(pos) == 0) {
                             completeButtonName = "Completed";
