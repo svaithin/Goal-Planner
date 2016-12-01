@@ -38,7 +38,6 @@ public class milestone_add extends AppCompatActivity {
     HashMap<Integer, Integer> pos_id_map;
     HashMap<Integer, Integer> pos_done_map;
 
-    //milestone = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +47,10 @@ public class milestone_add extends AppCompatActivity {
         // Set Goal As Text View
         setGoal();
 
-
-        //milestone.add("First Item");
-        //milestone.add("Second Item");
+        //Update UI
         updateUI();
+
+        // Starting up Listners
         milestonlistener();
     }
 
@@ -119,9 +118,7 @@ public class milestone_add extends AppCompatActivity {
         }
 
 
-
         lvItems.setAdapter(milestoneAdapter);
-
 
         milestoneAdapter.clear();
         milestoneAdapter.addAll(taskList);

@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             int idd = cursor.getColumnIndex(TaskContract.TaskEntry.GOALDONE);
             doneMap.put(row, cursor.getInt(idd));
             row++;
-            Log.d(TAG, "row" + doneMap);
+            //Log.d(TAG, "row" + doneMap);
 
         }
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     View view = super.getView(position, convertView, parent);
 
                     TextView textView = (TextView) view.findViewById(R.id.row);
-                    Log.d(TAG,"postiton"+position);
+                    //Log.d(TAG,"postiton"+position);
 
                     if (doneMap.get(position) > 0) {
 
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     }else {
                         textView.setTextColor(Color.RED);
+                        textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     }
 
                     return view;
@@ -132,13 +133,6 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter.clear();
         itemsAdapter.addAll(taskList);
         itemsAdapter.notifyDataSetChanged();
-        //itemsAdapter.addAll(taskList);
-
-        //mySimpleNewAdapter.clear();
-        //mySimpleNewAdapter.addAll(taskList);
-        /*mySimpleNewAdapter.addAll(taskList);*/
-        //mySimpleNewAdapter.notifyDataSetChanged();
-
 
         cursor.close();
         db.close();
@@ -196,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                                         //items.remove(pos);
                                         //items.add(pos,task);
                                         //lvItems.setAdapter(itemsAdapter);
-                                        Log.d("AlertDialog", "Positive");
+                                        //Log.d("AlertDialog", "Positive");
                                         updateUI();
                                     }
                                 })
@@ -209,21 +203,19 @@ public class MainActivity extends AppCompatActivity {
                                         SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
                                         if (doneMap.get(pos) == 0) {
-                                            //item1.setPaintFlags(item1.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                            //SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
-                                            //update_db.update(TaskContract.TaskEntry.GOAL, )
+
                                             update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
                                                     " set " + TaskContract.TaskEntry.GOALDONE +
                                                     " = 1" + " where _id = " + map.get(pos));
 
                                         } else {
-                                            //item1.setPaintFlags(item1.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+
                                             update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
                                                     " set " + TaskContract.TaskEntry.GOALDONE +
                                                     " = 0" + " where _id = " + map.get(pos));
                                         }
-                                        Log.d("AlertDialog", "Positive");
+                                        //Log.d("AlertDialog", "Positive");
                                         updateUI();
 
 
@@ -231,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                                 })
                                 .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Log.d("AlertDialog", "Negative");
+                                        //Log.d("AlertDialog", "Negative");
                                         SQLiteDatabase remove_db = mHelper.getWritableDatabase();
                                         remove_db.execSQL("delete from " + TaskContract.TaskEntry.GOAL +
                                                 " where _id =" + map.get(pos));
@@ -251,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapter,
                                             View item, int pos, long id) {
-                        Log.d(TAG, "inside click" + pos + ":" + map.get(pos));
+                        //Log.d(TAG, "inside click" + pos + ":" + map.get(pos));
                         Intent intent = new Intent(getApplicationContext(), milestone_add.class);
                         intent.putExtra("ID", map.get(pos));
                         startActivity(intent);
