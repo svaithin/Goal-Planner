@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class milestone_add extends AppCompatActivity {
     public final static String GOAL = "com.example.myfirstapp.MESSAGE";
     private ListView mTaskListView;
     private TaskDbHelper mHelper;
+    private Typeface custom_font;
     Integer goalID;
     HashMap<Integer, Integer> pos_id_map;
     HashMap<Integer, Integer> pos_done_map;
@@ -45,6 +47,9 @@ public class milestone_add extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_milestone_add);
 
+        custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
+        Button addbttn = (Button) findViewById(R.id.button);
+        addbttn.setTypeface(custom_font);
         // Set Goal As Text View
         setGoal();
 
@@ -57,6 +62,7 @@ public class milestone_add extends AppCompatActivity {
 
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
+
         if(lvItems ==null) {
             lvItems = (ListView) findViewById(R.id.lvItems1);
         }
@@ -101,6 +107,7 @@ public class milestone_add extends AppCompatActivity {
                     View view = super.getView(position, convertView, parent);
 
                     TextView textView = (TextView) view.findViewById(R.id.row);
+                    textView.setTypeface(custom_font);
                     //Log.d(TAG, "postiton" + position);
                     //Log.d(TAG, "pos_done_map:" + pos_done_map);
 
@@ -108,13 +115,11 @@ public class milestone_add extends AppCompatActivity {
 
             /*YOUR CHOICE OF COLOR*/
                         //textView.setTextColor(Color.BLUE);
-                        textView.setTextColor(Color.BLACK);
-                        textView.setTypeface(null, Typeface.ITALIC);
+
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     } else {
-                        textView.setTextColor(Color.BLACK);
-                        textView.setTypeface(null, Typeface.NORMAL);
-                        //textView.setTextColor(Color.RED);
+
+
                         textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     }
 
@@ -159,6 +164,12 @@ public class milestone_add extends AppCompatActivity {
         TextView tGoal = new TextView(this);
         tGoal=(TextView)findViewById(R.id.goaltext);
         tGoal.setText(goal);
+        tGoal.setTypeface(custom_font);
+        tGoal.setTextColor(Color.parseColor("#000000"));
+        TextView milestone = new TextView(this);
+        milestone = (TextView)findViewById(R.id.milestone);
+        milestone.setTypeface(custom_font);
+        milestone.setTextColor(Color.parseColor("#3f3f3f"));
 
     }
 

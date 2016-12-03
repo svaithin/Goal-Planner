@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import java.util.List;
 
 import static android.R.attr.id;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskDbHelper mHelper;
     HashMap<Integer, Integer> map;
     HashMap<Integer, Integer> doneMap;
-    MySimpleStringAdapter mySimpleNewAdapter;
+    //MySimpleStringAdapter mySimpleNewAdapter;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         mHelper = new TaskDbHelper(this);
 
+
         updateUI();
         setupListViewListener();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -67,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void updateUI() {
+
+        final Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
+        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
+        etNewItem.setTypeface(custom_font);
+        Button addbutton = (Button) findViewById(R.id.btnAddItem);
+        addbutton.setTypeface(custom_font);
+
 
         if(lvItems == null) {
             lvItems = (ListView) findViewById(R.id.lvItems);
@@ -112,17 +122,18 @@ public class MainActivity extends AppCompatActivity {
                     View view = super.getView(position, convertView, parent);
 
                     TextView textView = (TextView) view.findViewById(R.id.row);
+                    textView.setTypeface(custom_font);
                     //Log.d(TAG,"postiton"+position);
 
                     if (doneMap.get(position) > 0) {
 
             /*YOUR CHOICE OF COLOR*/
                         textView.setTextColor(Color.BLACK);
-                        textView.setTypeface(null, Typeface.ITALIC);
+
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     }else {
                         textView.setTextColor(Color.BLACK);
-                        textView.setTypeface(null, Typeface.NORMAL);
+
                         textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     }
 
@@ -196,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                                         //items.add(pos,task);
                                         //lvItems.setAdapter(itemsAdapter);
                                         //Log.d("AlertDialog", "Positive");
-                                        updateUI();
+                                        //updateUI();
                                     }
                                 })
                                 .setNeutralButton(completeButtonName, new DialogInterface.OnClickListener() {

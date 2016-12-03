@@ -8,16 +8,30 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#E5E5E5"
     tools:context="com.labs.svaithin.goalplanner_v0_01.MainActivity">
 
-        <ListView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lvItems"
-            android:layout_alignParentTop="true"
+            android:inputType="textPersonName"
+            android:text="Goals"
+            android:ems="10"
+            android:id="@+id/goaltext"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/btnAddItem" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lvItems"
+            android:divider="@null"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/btnAddItem"
+            android:layout_below="@+id/goaltext" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -34,7 +48,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
+            android:text="ADD"
             android:id="@+id/btnAddItem"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
