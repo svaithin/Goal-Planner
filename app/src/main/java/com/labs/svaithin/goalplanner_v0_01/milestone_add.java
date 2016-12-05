@@ -185,20 +185,22 @@ public class milestone_add extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String task = String.valueOf(taskEditText.getText());
+                        if(!task.trim().isEmpty()) {
 
-                        milestoneAdapter.add(task);
-                        // Adding to DB
+                            milestoneAdapter.add(task);
+                            // Adding to DB
 
-                        SQLiteDatabase db = mHelper.getWritableDatabase();
-                        ContentValues values = new ContentValues();
-                        values.put(TaskContract.TaskEntry.MILESTONETITLE, task);
-                        values.put(TaskContract.TaskEntry.MGOALID, goalID);
-                        values.put(TaskContract.TaskEntry.MILESTONEDONE,0);
-                        db.insertWithOnConflict(TaskContract.TaskEntry.MILESTONE,
-                                null,
-                                values,
-                                SQLiteDatabase.CONFLICT_REPLACE);
-                        db.close();
+                            SQLiteDatabase db = mHelper.getWritableDatabase();
+                            ContentValues values = new ContentValues();
+                            values.put(TaskContract.TaskEntry.MILESTONETITLE, task);
+                            values.put(TaskContract.TaskEntry.MGOALID, goalID);
+                            values.put(TaskContract.TaskEntry.MILESTONEDONE, 0);
+                            db.insertWithOnConflict(TaskContract.TaskEntry.MILESTONE,
+                                    null,
+                                    values,
+                                    SQLiteDatabase.CONFLICT_REPLACE);
+                            db.close();
+                        }
                         updateUI();
                         Log.d(TAG,"Added to DB");
 
@@ -236,15 +238,17 @@ public class milestone_add extends AppCompatActivity {
                                 .setPositiveButton( "Save", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         String task = String.valueOf(taskEditText.getText());
-                                        SQLiteDatabase update_db = mHelper.getWritableDatabase();
+                                        if(!task.trim().isEmpty()) {
+                                            SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
-                                        //update_db.update(TaskContract.TaskEntry.GOAL, )
-                                        update_db.execSQL("update " + TaskContract.TaskEntry.MILESTONE +
-                                                " set " + TaskContract.TaskEntry.MILESTONETITLE + " = '" +
-                                                task.toString() + "' where _id = " + pos_id_map.get(pos));
+                                            //update_db.update(TaskContract.TaskEntry.GOAL, )
+                                            update_db.execSQL("update " + TaskContract.TaskEntry.MILESTONE +
+                                                    " set " + TaskContract.TaskEntry.MILESTONETITLE + " = '" +
+                                                    task.toString() + "' where _id = " + pos_id_map.get(pos));
 
-                                        updateUI();
-                                        update_db.close();
+                                            updateUI();
+                                            update_db.close();
+                                        }
                                         //lvItems.setAdapter(milestoneAdapter);
                                         Log.d( "AlertDialog", "Positive" );
                                     }

@@ -217,16 +217,18 @@ public class MainActivity extends AppCompatActivity {
                                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         String task = String.valueOf(taskEditText.getText());
+                                        if(!task.trim().isEmpty()) {
 
-                                        SQLiteDatabase update_db = mHelper.getWritableDatabase();
+                                            SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
 
-                                        update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
-                                                " set " + TaskContract.TaskEntry.GOALTITLE + " = '" +
-                                                task.toString() + "' where _id = " + map.get(pos));
+                                            update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
+                                                    " set " + TaskContract.TaskEntry.GOALTITLE + " = '" +
+                                                    task.toString() + "' where _id = " + map.get(pos));
 
-                                        updateUI();
-                                        update_db.close();
+                                            updateUI();
+                                            update_db.close();
+                                        }
 
                                     }
                                 })
