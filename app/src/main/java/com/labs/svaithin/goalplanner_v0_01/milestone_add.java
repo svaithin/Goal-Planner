@@ -27,6 +27,8 @@ import com.labs.svaithin.goalplanner_v0_01.db.TaskDbHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.R.attr.dialogTitle;
+
 public class milestone_add extends AppCompatActivity {
 
     private ArrayList<String> milestone;
@@ -175,6 +177,7 @@ public class milestone_add extends AppCompatActivity {
 
     public void onAddMilestone(View v) {
         final EditText taskEditText = new EditText(this);
+        taskEditText.setTypeface(custom_font);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a milestone")
                 .setView(taskEditText)
@@ -205,6 +208,13 @@ public class milestone_add extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+        TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.text2);
+        Log.d(TAG,"dialogtitle"+dialogTitle);
+        Button save = (Button) dialog.findViewById(android.R.id.button1);
+        save.setTypeface(custom_font);
+        Button delete = (Button) dialog.findViewById(android.R.id.button2);
+        delete.setTypeface(custom_font);
+
         Log.d(TAG,"calling updateui after adding");
 
     }
@@ -219,7 +229,8 @@ public class milestone_add extends AppCompatActivity {
                         final EditText taskEditText = new EditText(getApplicationContext());
                         taskEditText.setText(milestone.get(pos));
                         taskEditText.setTextColor(Color.BLACK);
-                        new AlertDialog.Builder( milestone_add.this )
+                        taskEditText.setTypeface(custom_font);
+                        AlertDialog dialog = new AlertDialog.Builder( milestone_add.this )
                                 .setTitle( "Milestone" )
                                 .setView(taskEditText)
                                 .setPositiveButton( "Save", new DialogInterface.OnClickListener() {
@@ -252,6 +263,14 @@ public class milestone_add extends AppCompatActivity {
                                     }
                                 } )
                                 .show();
+                        TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.title);
+                        Log.d(TAG,"dialogtitle"+dialogTitle);
+                        Button save = (Button) dialog.findViewById(android.R.id.button1);
+                        save.setTypeface(custom_font);
+                        Button delete = (Button) dialog.findViewById(android.R.id.button2);
+                        delete.setTypeface(custom_font);
+                        Button completed = (Button) dialog.findViewById(android.R.id.button3);
+                        completed.setTypeface(custom_font);
                         return true;
                     }
 

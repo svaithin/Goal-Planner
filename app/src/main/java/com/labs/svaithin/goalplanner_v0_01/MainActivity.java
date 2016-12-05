@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,7 +31,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.R.attr.animationDuration;
+import static android.R.attr.button;
+import static android.R.attr.dialogTitle;
 import static android.R.attr.id;
+import static android.R.attr.title;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static java.security.AccessController.getContext;
 
@@ -61,11 +66,25 @@ public class MainActivity extends AppCompatActivity {
         mHelper = new TaskDbHelper(this);
 
 
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
+        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
+
         updateUI();
         setupListViewListener();
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new com.google.android.gms.common.api.GoogleApiClient.Builder(this).addApi(com.google.android.gms.appindexing.AppIndex.API).build();
+    }
+
+    @Override
+    public void setContentView(View view)
+    {
+        super.setContentView(view);
+        Log.d(TAG,"setContentView");
+
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
+        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
     }
 
 
@@ -154,19 +173,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String goalTitle = etNewItem.getText().toString();
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TaskContract.TaskEntry.GOALTITLE, goalTitle);
-        values.put(TaskContract.TaskEntry.GOALDONE, 0);
-        db.insertWithOnConflict(TaskContract.TaskEntry.GOAL,
-                null,
-                values,
-                SQLiteDatabase.CONFLICT_REPLACE);
-        db.close();
-
+        String goalTitle = etNewItem.getText().toString().trim();
+        Log.d(TAG,"goal:"+goalTitle.isEmpty());
+        if(!goalTitle.isEmpty()) {
+            Log.d(TAG,"goalemplty:"+goalTitle);
+            SQLiteDatabase db = mHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TaskContract.TaskEntry.GOALTITLE, goalTitle);
+            values.put(TaskContract.TaskEntry.GOALDONE, 0);
+            db.insertWithOnConflict(TaskContract.TaskEntry.GOAL,
+                    null,
+                    values,
+                    SQLiteDatabase.CONFLICT_REPLACE);
+            db.close();
+        }
         updateUI();
-        //itemsAdapter.add(goalTitle);
+
         etNewItem.setText("");
     }
 
@@ -177,7 +199,9 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onItemLongClick(AdapterView<?> adapter,
                                                    final View item, final int pos, long id) {
                         final EditText taskEditText = new EditText(getApplicationContext());
+                        final Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
                         taskEditText.setText(items.get(pos));
+                        taskEditText.setTypeface(custom_font);
                         taskEditText.setTextColor(Color.BLACK);
                         Log.d(TAG,"edit text:"+items.get(pos));
                         String completeButtonName = new String();
@@ -187,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             completeButtonName = "Incomplete";
                         }
-                        new AlertDialog.Builder(MainActivity.this)
+                        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("Goal")
                                 .setView(taskEditText)
                                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -196,18 +220,14 @@ public class MainActivity extends AppCompatActivity {
 
                                         SQLiteDatabase update_db = mHelper.getWritableDatabase();
 
-                                        //update_db.update(TaskContract.TaskEntry.GOAL, )
+
                                         update_db.execSQL("update " + TaskContract.TaskEntry.GOAL +
                                                 " set " + TaskContract.TaskEntry.GOALTITLE + " = '" +
                                                 task.toString() + "' where _id = " + map.get(pos));
 
                                         updateUI();
                                         update_db.close();
-                                        //items.remove(pos);
-                                        //items.add(pos,task);
-                                        //lvItems.setAdapter(itemsAdapter);
-                                        //Log.d("AlertDialog", "Positive");
-                                        //updateUI();
+
                                     }
                                 })
                                 .setNeutralButton(completeButtonName, new DialogInterface.OnClickListener() {
@@ -250,6 +270,17 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 })
                                 .show();
+
+                        TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.title);
+                        Log.d(TAG,"dialogtitle"+dialogTitle);
+                        Button save = (Button) dialog.findViewById(android.R.id.button1);
+                        save.setTypeface(custom_font);
+                        Button delete = (Button) dialog.findViewById(android.R.id.button2);
+                        delete.setTypeface(custom_font);
+                        Button completed = (Button) dialog.findViewById(android.R.id.button3);
+                        completed.setTypeface(custom_font);
+
+
                         return true;
                     }
 
