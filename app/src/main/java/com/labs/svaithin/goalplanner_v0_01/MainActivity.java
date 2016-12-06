@@ -10,18 +10,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.labs.svaithin.goalplanner_v0_01.db.TaskContract;
@@ -59,15 +62,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         //Uncomment the below line to delete the DB when DB error occurs
         //getApplicationContext().deleteDatabase(TaskContract.DB_NAME);
+
+        setContentView(R.layout.activity_main);
+
+        //Set Custom title bar
+        setCustomTitlebar();
+
 
         mHelper = new TaskDbHelper(this);
 
 
-        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
-        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
+        //FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
+        //fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
 
         updateUI();
         setupListViewListener();
@@ -77,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         client = new com.google.android.gms.common.api.GoogleApiClient.Builder(this).addApi(com.google.android.gms.appindexing.AppIndex.API).build();
     }
 
-    @Override
+    /*@Override
     public void setContentView(View view)
     {
         super.setContentView(view);
@@ -85,8 +93,19 @@ public class MainActivity extends AppCompatActivity {
 
         FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
         fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
-    }
+    }*/
 
+    private void setCustomTitlebar(){
+        RelativeLayout titlebar = (RelativeLayout) findViewById(R.id.goal_title1);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.goal_title1);
+
+        TextView titleBar = (TextView)getWindow().findViewById(R.id.header_text);
+        final Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
+        titleBar.setTypeface(custom_font);
+
+
+    }
 
     private void updateUI() {
 

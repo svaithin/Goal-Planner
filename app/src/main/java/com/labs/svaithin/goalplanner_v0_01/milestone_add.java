@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.labs.svaithin.goalplanner_v0_01.db.TaskContract;
@@ -163,11 +165,14 @@ public class milestone_add extends AppCompatActivity {
             goal = cursor.getString(cursor.getColumnIndex(TaskContract.TaskEntry.GOALTITLE));
         }
 
-        TextView tGoal = new TextView(this);
-        tGoal=(TextView)findViewById(R.id.goaltext);
-        tGoal.setText(goal);
-        tGoal.setTypeface(custom_font);
-        tGoal.setTextColor(Color.parseColor("#000000"));
+        RelativeLayout titlebar = (RelativeLayout) findViewById(R.id.goal_title1);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.goal_title1);
+
+        TextView titleBar = (TextView)getWindow().findViewById(R.id.header_text);
+        final Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
+        titleBar.setTypeface(custom_font);
+        titleBar.setText(goal);
         TextView milestone = new TextView(this);
         milestone = (TextView)findViewById(R.id.milestone);
         milestone.setTypeface(custom_font);
