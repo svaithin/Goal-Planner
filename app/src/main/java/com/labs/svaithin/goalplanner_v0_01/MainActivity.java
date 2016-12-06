@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(itemsAdapter == null) {
             itemsAdapter = new ArrayAdapter<String>(this,
-                    R.layout.milestone_row, R.id.row, items) {
+                    R.layout.goal_row, R.id.row, items) {
 
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     if (doneMap.get(position) > 0) {
 
             /*YOUR CHOICE OF COLOR*/
-                        textView.setTextColor(Color.BLACK);
+                        textView.setTextColor(Color.GRAY);
 
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     }else {
@@ -207,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
             db.close();
         }
         updateUI();
-
         etNewItem.setText("");
+
     }
 
     private void setupListViewListener() {
@@ -222,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
                         taskEditText.setText(items.get(pos));
                         taskEditText.setTypeface(custom_font);
                         taskEditText.setTextColor(Color.BLACK);
+                        taskEditText.setHint("Goal");
                         Log.d(TAG,"edit text:"+items.get(pos));
                         String completeButtonName = new String();
                         if (doneMap.get(pos) == 0) {
@@ -231,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
                             completeButtonName = "Incomplete";
                         }
                         AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Goal")
                                 .setView(taskEditText)
                                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

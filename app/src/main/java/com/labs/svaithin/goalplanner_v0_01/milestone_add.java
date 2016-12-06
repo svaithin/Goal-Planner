@@ -53,6 +53,8 @@ public class milestone_add extends AppCompatActivity {
 
         custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
         Button addbttn = (Button) findViewById(R.id.button);
+        EditText etNewItem = (EditText) findViewById(R.id.etNewMilestone);
+        etNewItem.setTypeface(custom_font);
         addbttn.setTypeface(custom_font);
         // Set Goal As Text View
         setGoal();
@@ -116,14 +118,11 @@ public class milestone_add extends AppCompatActivity {
                     //Log.d(TAG, "pos_done_map:" + pos_done_map);
 
                     if (pos_done_map.get(position) > 0) {
-
             /*YOUR CHOICE OF COLOR*/
-                        //textView.setTextColor(Color.BLUE);
-
+                        textView.setTextColor(Color.GRAY);
                         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     } else {
-
-
+                        textView.setTextColor(Color.BLACK);
                         textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                     }
 
@@ -173,57 +172,34 @@ public class milestone_add extends AppCompatActivity {
         final Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
         titleBar.setTypeface(custom_font);
         titleBar.setText(goal);
-        TextView milestone = new TextView(this);
+        /*TextView milestone = new TextView(this);
         milestone = (TextView)findViewById(R.id.milestone);
         milestone.setTypeface(custom_font);
-        milestone.setTextColor(Color.parseColor("#3f3f3f"));
+        milestone.setTextColor(Color.parseColor("#3f3f3f"));*/
 
     }
 
     public void onAddMilestone(View v) {
-        final EditText taskEditText = new EditText(this);
-        taskEditText.setTypeface(custom_font);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Add a milestone")
-                .setView(taskEditText)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String task = String.valueOf(taskEditText.getText());
-                        if(!task.trim().isEmpty()) {
+        EditText etNewItem = (EditText) findViewById(R.id.etNewMilestone);
+        String task = etNewItem.getText().toString().trim();
+        if(!task.trim().isEmpty()) {
 
-                            milestoneAdapter.add(task);
-                            // Adding to DB
+            milestoneAdapter.add(task);
+            // Adding to DB
 
-                            SQLiteDatabase db = mHelper.getWritableDatabase();
-                            ContentValues values = new ContentValues();
-                            values.put(TaskContract.TaskEntry.MILESTONETITLE, task);
-                            values.put(TaskContract.TaskEntry.MGOALID, goalID);
-                            values.put(TaskContract.TaskEntry.MILESTONEDONE, 0);
-                            db.insertWithOnConflict(TaskContract.TaskEntry.MILESTONE,
-                                    null,
-                                    values,
-                                    SQLiteDatabase.CONFLICT_REPLACE);
-                            db.close();
-                        }
-                        updateUI();
-                        Log.d(TAG,"Added to DB");
-
-
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
-        TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.text2);
-        Log.d(TAG,"dialogtitle"+dialogTitle);
-        Button save = (Button) dialog.findViewById(android.R.id.button1);
-        save.setTypeface(custom_font);
-        Button delete = (Button) dialog.findViewById(android.R.id.button2);
-        delete.setTypeface(custom_font);
-
-        Log.d(TAG,"calling updateui after adding");
-
+            SQLiteDatabase db = mHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TaskContract.TaskEntry.MILESTONETITLE, task);
+            values.put(TaskContract.TaskEntry.MGOALID, goalID);
+            values.put(TaskContract.TaskEntry.MILESTONEDONE, 0);
+            db.insertWithOnConflict(TaskContract.TaskEntry.MILESTONE,
+                    null,
+                    values,
+                    SQLiteDatabase.CONFLICT_REPLACE);
+            db.close();
+        }
+        updateUI();
+        etNewItem.setText("");
     }
 
     private void milestonlistener(){
@@ -238,7 +214,6 @@ public class milestone_add extends AppCompatActivity {
                         taskEditText.setTextColor(Color.BLACK);
                         taskEditText.setTypeface(custom_font);
                         AlertDialog dialog = new AlertDialog.Builder( milestone_add.this )
-                                .setTitle( "Milestone" )
                                 .setView(taskEditText)
                                 .setPositiveButton( "Save", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
