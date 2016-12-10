@@ -27,6 +27,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.labs.svaithin.goalplanner_v0_01.db.TaskContract;
 import com.labs.svaithin.goalplanner_v0_01.db.TaskDbHelper;
 
@@ -44,6 +46,8 @@ import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
+    private AdView mAdView;
+    private Button btnFullscreenAd;
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
@@ -83,7 +87,38 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new com.google.android.gms.common.api.GoogleApiClient.Builder(this).addApi(com.google.android.gms.appindexing.AppIndex.API).build();
+
+        //Add
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+
     }
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
 
     /*@Override
     public void setContentView(View view)
@@ -284,6 +319,8 @@ public class MainActivity extends AppCompatActivity {
                                         SQLiteDatabase remove_db = mHelper.getWritableDatabase();
                                         remove_db.execSQL("delete from " + TaskContract.TaskEntry.GOAL +
                                                 " where _id =" + map.get(pos));
+                                        remove_db.execSQL("delete from "+ TaskContract.TaskEntry.MILESTONE+
+                                            " where "+ TaskContract.TaskEntry.MGOALID+ " = "+map.get(pos));
                                         remove_db.close();
                                         //items.remove(pos);
                                         //lvItems.setAdapter(itemsAdapter);

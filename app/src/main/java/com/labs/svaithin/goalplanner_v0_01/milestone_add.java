@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.labs.svaithin.goalplanner_v0_01.db.TaskContract;
 import com.labs.svaithin.goalplanner_v0_01.db.TaskDbHelper;
 
@@ -44,6 +46,7 @@ public class milestone_add extends AppCompatActivity {
     Integer goalID;
     HashMap<Integer, Integer> pos_id_map;
     HashMap<Integer, Integer> pos_done_map;
+    private AdView mAdView;
 
 
     @Override
@@ -64,7 +67,38 @@ public class milestone_add extends AppCompatActivity {
 
         // Starting up Listners
         milestonlistener();
+
+        //Add admob
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
     }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
 
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();

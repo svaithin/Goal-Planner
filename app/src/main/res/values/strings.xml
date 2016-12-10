@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">GoalPlanner_V0_01</string>
+    <string name="app_name">GoalPlanner</string>
+    <!-- AdMob ad unit IDs -->
+    <string name="banner_home_footer">ca-app-pub-8083256510728909/9848777679</string>
+    <string name="interstitial_full_screen">ca-app-pub-0664570763252260/1769900428</string>
+
 </resources>

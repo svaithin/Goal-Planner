@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,8 +20,8 @@
             android:divider="@null"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/btnAddItem"
-            android:layout_below="@+id/goaltext" />
+            android:layout_below="@+id/goaltext"
+            android:layout_above="@+id/adView" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -44,6 +45,14 @@
             android:onClick="onAddItem"
             android:layout_alignParentEnd="true" />
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_home_footer"
+            android:layout_above="@+id/etNewItem"
+            android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
