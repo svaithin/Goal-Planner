@@ -89,16 +89,16 @@ public class MainActivity extends AppCompatActivity {
         client = new com.google.android.gms.common.api.GoogleApiClient.Builder(this).addApi(com.google.android.gms.appindexing.AppIndex.API).build();
 
         //Add
-        mAdView = (AdView) findViewById(R.id.adView);
+        /*mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
 
     }
     @Override
     public void onPause() {
         if (mAdView != null) {
-            mAdView.pause();
+            //mAdView.pause();
         }
         super.onPause();
     }
@@ -107,14 +107,14 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (mAdView != null) {
-            mAdView.resume();
+           // mAdView.resume();
         }
     }
 
     @Override
     public void onDestroy() {
         if (mAdView != null) {
-            mAdView.destroy();
+            //mAdView.destroy();
         }
         super.onDestroy();
     }

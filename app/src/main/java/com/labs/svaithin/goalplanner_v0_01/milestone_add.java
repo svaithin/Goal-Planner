@@ -69,10 +69,10 @@ public class milestone_add extends AppCompatActivity {
         milestonlistener();
 
         //Add admob
-        mAdView = (AdView) findViewById(R.id.adView);
+        /*mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
     }
 
     @Override
