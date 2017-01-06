@@ -202,10 +202,13 @@ public class milestone_add extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.goal_title1);
 
+        TextView Goal = (TextView)findViewById(R.id.goal);
+
         TextView titleBar = (TextView)getWindow().findViewById(R.id.header_text);
         final Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
         titleBar.setTypeface(custom_font);
-        titleBar.setText(goal);
+        Goal.setTypeface(custom_font);
+        Goal.setText(goal);
         /*TextView milestone = new TextView(this);
         milestone = (TextView)findViewById(R.id.milestone);
         milestone.setTypeface(custom_font);
