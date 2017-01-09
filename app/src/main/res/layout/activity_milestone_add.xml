@@ -35,16 +35,6 @@
         android:onClick="onAddMilestone"
         android:layout_alignParentEnd="true" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvItems1"
-        android:divider="@null"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/goal"
-        android:layout_above="@+id/etNewMilestone" />
-
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
@@ -56,5 +46,84 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/ewhy"
+        android:layout_below="@+id/goal"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tEffert"
+        android:layout_toEndOf="@+id/tEffert" />
+
+    <TextView
+        android:text="Reason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/why"
+        android:textSize="14sp"
+        android:layout_below="@+id/goal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/ewhy"
+        android:layout_toStartOf="@+id/ewhy"
+        android:layout_above="@+id/eEffert" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvItems1"
+        android:divider="@null"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etNewMilestone"
+        android:layout_below="@+id/textView5" />
+
+    <TextView
+        android:text="Effort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tEffert"
+        android:layout_below="@+id/ewhy"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/eEffert"
+        android:layout_toStartOf="@+id/eEffert"
+        android:layout_above="@+id/editText3" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/eEffert"
+        android:layout_below="@+id/ewhy"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="If Successful"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/tEffert"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/eEffert"
+        android:layout_toStartOf="@+id/eEffert"
+        android:layout_alignBottom="@+id/editText3" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText3"
+        android:layout_below="@+id/eEffert"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
