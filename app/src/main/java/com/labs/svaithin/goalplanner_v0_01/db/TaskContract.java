@@ -16,5 +16,13 @@ public class TaskContract {
         public static final String MILESTONEDONE = "milestonedone";
         public static final String MGOALID = "goalid";
 
+        public static final String GOALDETAIL = "goaldetail";
+        public static final String REASON = "reason";
+        public static final String EFFORT ="effort";
+        public static final String OKRESULT = "okresult";
+        public static final String NGRESULT ="ngresult";
+        public static final String DGOALID = "goalid";
+
+
     }
 }

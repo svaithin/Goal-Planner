@@ -30,6 +30,18 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 TaskContract.TaskEntry.GOAL + "("+ TaskContract.TaskEntry._ID +"));";
 
         db.execSQL(createTable);
+
+        createTable = "CREATE TABLE " + TaskContract.TaskEntry.GOALDETAIL + " ( " +
+                TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TaskContract.TaskEntry.REASON + " TEXT," +
+                TaskContract.TaskEntry.EFFORT + " TEXT," +
+                TaskContract.TaskEntry.OKRESULT + " TEXT," +
+                TaskContract.TaskEntry.NGRESULT + " TEXT," +
+                TaskContract.TaskEntry.DGOALID + " INTEGER," + " FOREIGN KEY (" +
+                TaskContract.TaskEntry.DGOALID+")REFERENCES " +
+                TaskContract.TaskEntry.GOAL + "("+ TaskContract.TaskEntry._ID +"));";
+
+        db.execSQL(createTable);
     }
 
     @Override
