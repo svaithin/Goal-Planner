@@ -3,6 +3,7 @@ package com.labs.svaithin.goalplanner_v0_01.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static android.provider.Contacts.SettingsColumns.KEY;
 
@@ -19,6 +20,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 TaskContract.TaskEntry.GOALTITLE + " TEXT NOT NULL," +
                 TaskContract.TaskEntry.GOALDONE + " BOOLEAN NOT NULL DEFAULT 0);";
 
+        Log.d("CreateDBDone",createTable);
         db.execSQL(createTable);
 
         createTable = "CREATE TABLE " + TaskContract.TaskEntry.MILESTONE + " ( " +
@@ -29,6 +31,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 TaskContract.TaskEntry.MGOALID+")REFERENCES " +
                 TaskContract.TaskEntry.GOAL + "("+ TaskContract.TaskEntry._ID +"));";
 
+        Log.d("CreateDBDone",createTable);
         db.execSQL(createTable);
 
         createTable = "CREATE TABLE " + TaskContract.TaskEntry.GOALDETAIL + " ( " +
@@ -41,14 +44,27 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                 TaskContract.TaskEntry.DGOALID+")REFERENCES " +
                 TaskContract.TaskEntry.GOAL + "("+ TaskContract.TaskEntry._ID +"));";
 
+        Log.d("CreateDBDone",createTable);
         db.execSQL(createTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TaskContract.TaskEntry.GOAL);
-        onCreate(db);
-        db.execSQL("DROP TABLE IF EXISTS " + TaskContract.TaskEntry.MILESTONE);
-        onCreate(db);
+        if(newVersion == 2){
+
+            String createTable = "CREATE TABLE " + TaskContract.TaskEntry.GOALDETAIL + " ( " +
+                    TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TaskContract.TaskEntry.REASON + " TEXT," +
+                    TaskContract.TaskEntry.EFFORT + " TEXT," +
+                    TaskContract.TaskEntry.OKRESULT + " TEXT," +
+                    TaskContract.TaskEntry.NGRESULT + " TEXT," +
+                    TaskContract.TaskEntry.DGOALID + " INTEGER," + " FOREIGN KEY (" +
+                    TaskContract.TaskEntry.DGOALID+")REFERENCES " +
+                    TaskContract.TaskEntry.GOAL + "("+ TaskContract.TaskEntry._ID +"));";
+
+            Log.d("CreateDBDone",createTable);
+            db.execSQL(createTable);
+
+        }
     }
 }

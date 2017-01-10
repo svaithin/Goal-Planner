@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.R.attr.dialogTitle;
+import static android.R.attr.resizeable;
 
 public class milestone_add extends AppCompatActivity {
 
@@ -47,6 +48,10 @@ public class milestone_add extends AppCompatActivity {
     HashMap<Integer, Integer> pos_id_map;
     HashMap<Integer, Integer> pos_done_map;
     private AdView mAdView;
+    private String reason;
+    private String effort;
+    private String okResult;
+    private String ngResult;
 
 
     @Override
@@ -59,8 +64,12 @@ public class milestone_add extends AppCompatActivity {
         EditText etNewItem = (EditText) findViewById(R.id.etNewMilestone);
         etNewItem.setTypeface(custom_font);
         addbttn.setTypeface(custom_font);
+        mHelper = new TaskDbHelper(this);
         // Set Goal As Text View
         setGoal();
+
+        // Get and Set Reasons from DB
+        getReasonFromDB();
 
         //Update UI
         updateUI();
@@ -97,6 +106,30 @@ public class milestone_add extends AppCompatActivity {
             mAdView.destroy();
         }
         super.onDestroy();
+    }
+
+    private void getReasonFromDB(){
+
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(TaskContract.TaskEntry.GOALDETAIL,
+                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.REASON,
+                        TaskContract.TaskEntry.DGOALID,TaskContract.TaskEntry.NGRESULT,
+                        TaskContract.TaskEntry.EFFORT, TaskContract.TaskEntry.OKRESULT},
+                ""+TaskContract.TaskEntry.DGOALID+" = ?",new String[]{goalID.toString()}, null, null, null);
+
+        int idt = cursor.getColumnIndex(TaskContract.TaskEntry.REASON);
+        reason = cursor.getString(idt);
+        idt = cursor.getColumnIndex(TaskContract.TaskEntry.EFFORT);
+        effort = cursor.getString(idt);
+        idt = cursor.getColumnIndex(TaskContract.TaskEntry.OKRESULT);
+        okResult = cursor.getString(idt);
+        idt = cursor.getColumnIndex(TaskContract.TaskEntry.NGRESULT);
+        ngResult = cursor.getString(idt);
+
+
+        Log.d(TAG, "reason" +reason + "effort" + effort);
+
     }
 
 
@@ -186,7 +219,7 @@ public class milestone_add extends AppCompatActivity {
         Log.d("ID", "ID"+goalID);
 
         // DB operations
-        mHelper = new TaskDbHelper(this);
+
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
         String goalquery = "Select "+ TaskContract.TaskEntry.GOALTITLE + " from "+ TaskContract.TaskEntry.GOAL +

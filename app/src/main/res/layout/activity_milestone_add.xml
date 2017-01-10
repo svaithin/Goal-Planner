@@ -66,21 +66,7 @@
         android:id="@+id/why"
         android:textSize="14sp"
         android:layout_below="@+id/goal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/ewhy"
-        android:layout_toStartOf="@+id/ewhy"
-        android:layout_above="@+id/eEffert" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvItems1"
-        android:divider="@null"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/etNewMilestone"
-        android:layout_below="@+id/textView5" />
+        android:layout_above="@+id/tEffert" />
 
     <TextView
         android:text="Effort"
@@ -90,9 +76,10 @@
         android:layout_below="@+id/ewhy"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/eEffert"
         android:layout_toStartOf="@+id/eEffert"
-        android:layout_above="@+id/editText3" />
+        android:layout_above="@+id/editText3"
+        android:layout_alignRight="@+id/why"
+        android:layout_alignEnd="@+id/why" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -102,7 +89,9 @@
         android:id="@+id/eEffert"
         android:layout_below="@+id/ewhy"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/why"
+        android:layout_toEndOf="@+id/why" />
 
     <TextView
         android:text="If Successful"
@@ -124,6 +113,30 @@
         android:id="@+id/editText3"
         android:layout_below="@+id/eEffert"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/tEffert"
+        android:layout_toEndOf="@+id/tEffert" />
+
+    <TextView
+        android:text="Milestones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvItems1"
+        android:divider="@null"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etNewMilestone"
+        android:layout_below="@+id/textView7" />
 
 </RelativeLayout>
