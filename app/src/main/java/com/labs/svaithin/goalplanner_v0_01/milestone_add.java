@@ -112,24 +112,26 @@ public class milestone_add extends AppCompatActivity {
 
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
+        Log.d(TAG,"goalid"+goalID.toString());
+
         Cursor cursor = db.query(TaskContract.TaskEntry.GOALDETAIL,
                 new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.REASON,
                         TaskContract.TaskEntry.DGOALID,TaskContract.TaskEntry.NGRESULT,
                         TaskContract.TaskEntry.EFFORT, TaskContract.TaskEntry.OKRESULT},
                 ""+TaskContract.TaskEntry.DGOALID+" = ?",new String[]{goalID.toString()}, null, null, null);
 
-        int idt = cursor.getColumnIndex(TaskContract.TaskEntry.REASON);
-        reason = cursor.getString(idt);
-        idt = cursor.getColumnIndex(TaskContract.TaskEntry.EFFORT);
-        effort = cursor.getString(idt);
-        idt = cursor.getColumnIndex(TaskContract.TaskEntry.OKRESULT);
-        okResult = cursor.getString(idt);
-        idt = cursor.getColumnIndex(TaskContract.TaskEntry.NGRESULT);
-        ngResult = cursor.getString(idt);
-
-
-        Log.d(TAG, "reason" +reason + "effort" + effort);
-
+        while(cursor.moveToNext()) {
+            int idt = cursor.getColumnIndex(TaskContract.TaskEntry.REASON);
+            Log.d(TAG, "idt" + idt);
+            reason = cursor.getString(idt);
+            idt = cursor.getColumnIndex(TaskContract.TaskEntry.EFFORT);
+            effort = cursor.getString(idt);
+            idt = cursor.getColumnIndex(TaskContract.TaskEntry.OKRESULT);
+            okResult = cursor.getString(idt);
+            idt = cursor.getColumnIndex(TaskContract.TaskEntry.NGRESULT);
+            ngResult = cursor.getString(idt);
+            Log.d(TAG, "reason" + reason + "effort" + effort);
+        }
     }
 
 
