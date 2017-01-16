@@ -205,6 +205,13 @@ public class milestone_add extends AppCompatActivity {
                     valid= 1;
                 }
 
+                EditText ngimpact = (EditText)findViewById(R.id.editText);
+                String ngres = ngimpact.getText().toString().trim();
+                if(!ngres.trim().isEmpty()){
+                    values.put(TaskContract.TaskEntry.NGRESULT,ngres);
+                    valid=1;
+                }
+
                 if(valid > 0){
                     values.put(TaskContract.TaskEntry.DGOALID, goalID);
                     db.insertWithOnConflict(TaskContract.TaskEntry.GOALDETAIL,
@@ -254,6 +261,8 @@ public class milestone_add extends AppCompatActivity {
         effort1.setText(effort);
         EditText okres = (EditText) findViewById(R.id.editText3);
         okres.setText(okResult);
+        EditText ngres = (EditText) findViewById(R.id.editText);
+        ngres.setText(ngResult);
 
     }
 
