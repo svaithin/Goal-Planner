@@ -73,8 +73,7 @@ public class milestone_add extends AppCompatActivity {
         // Set Goal As Text View
         setGoal();
 
-        // Get and Set Reasons from DB
-        getReasonFromDB();
+
 
         //Update UI
         updateUI();
@@ -192,6 +191,14 @@ public class milestone_add extends AppCompatActivity {
             ngResult = cursor.getString(idt);
             Log.d(TAG, "reason" + reason + "effort" + effort);
         }
+
+        EditText etNewItem = (EditText) findViewById(R.id.ewhy);
+        etNewItem.setText(reason);
+        EditText effort1 = (EditText) findViewById(R.id.eEffert);
+        effort1.setText(effort);
+        EditText okres = (EditText) findViewById(R.id.editText3);
+        okres.setText(okResult);
+
     }
 
 
@@ -266,6 +273,11 @@ public class milestone_add extends AppCompatActivity {
         milestoneAdapter.clear();
         milestoneAdapter.addAll(taskList);
         milestoneAdapter.notifyDataSetChanged();
+
+        // Get and Set Reasons from DB
+        getReasonFromDB();
+
+
 
         cursor.close();
         db.close();
