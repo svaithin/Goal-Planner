@@ -13,6 +13,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -65,6 +67,9 @@ public class milestone_add extends AppCompatActivity {
         etNewItem.setTypeface(custom_font);
         addbttn.setTypeface(custom_font);
         mHelper = new TaskDbHelper(this);
+
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
+        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
         // Set Goal As Text View
         setGoal();
 
@@ -107,6 +112,61 @@ public class milestone_add extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_task:
+                Log.d(TAG, "Add a new task");
+                EditText etNewItem = (EditText) findViewById(R.id.ewhy);
+                String reason = etNewItem.getText().toString().trim();
+                SQLiteDatabase db = mHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                int valid = 0;
+
+                if(!reason.trim().isEmpty()) {
+                    values.put(TaskContract.TaskEntry.REASON, reason);
+                    valid = 1;
+                }
+
+                EditText effort = (EditText) findViewById(R.id.eEffert) ;
+                String efforttext = effort.getText().toString().trim();
+                if(!efforttext.trim().isEmpty()){
+                    values.put(TaskContract.TaskEntry.EFFORT,efforttext);
+                    valid =1;
+                }
+
+                EditText impact = (EditText) findViewById(R.id.editText3);
+                String okresult = impact.getText().toString().trim();
+                if(!okresult.trim().isEmpty()){
+                    values.put(TaskContract.TaskEntry.OKRESULT,okresult);
+                    valid= 1;
+                }
+
+                if(valid > 0){
+                    values.put(TaskContract.TaskEntry.DGOALID, goalID);
+                    db.insertWithOnConflict(TaskContract.TaskEntry.GOALDETAIL,
+                            null,
+                            values,
+                            SQLiteDatabase.CONFLICT_REPLACE);
+                    db.close();
+                }
+
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void getReasonFromDB(){
 

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskDbHelper mHelper;
     HashMap<Integer, Integer> map;
     HashMap<Integer, Integer> doneMap;
-    //MySimpleStringAdapter mySimpleNewAdapter;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -78,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
         mHelper = new TaskDbHelper(this);
 
 
-        //FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
-        //fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
-
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "font.otf");
+        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
         updateUI();
         setupListViewListener();
 
