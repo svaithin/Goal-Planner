@@ -35,6 +35,7 @@ import java.util.HashMap;
 
 import static android.R.attr.dialogTitle;
 import static android.R.attr.resizeable;
+import static com.labs.svaithin.goalplanner_v0_01.R.id.etNewItem;
 
 public class milestone_add extends AppCompatActivity {
 
@@ -62,9 +63,9 @@ public class milestone_add extends AppCompatActivity {
         setContentView(R.layout.activity_milestone_add);
 
         custom_font = Typeface.createFromAsset(getAssets(), "fonts/Copperplate.ttc");
-        Button addbttn = (Button) findViewById(R.id.button);
-        EditText etNewItem = (EditText) findViewById(R.id.etNewMilestone);
-        etNewItem.setTypeface(custom_font);
+        Button addbttn = (Button) findViewById(R.id.button2);
+        //EditText etNewItem = (EditText) findViewById(R.id.etNewMilestone);
+        //etNewItem.setTypeface(custom_font);
         addbttn.setTypeface(custom_font);
         mHelper = new TaskDbHelper(this);
 
@@ -88,6 +89,61 @@ public class milestone_add extends AppCompatActivity {
         mAdView.loadAd(adRequest);*/
     }
 
+
+    public  void addMilestone(View v){
+
+        final EditText taskEditText = new EditText(getApplicationContext());
+        taskEditText.setTextColor(Color.BLACK);
+        taskEditText.setTypeface(custom_font);
+        AlertDialog dialog = new AlertDialog.Builder( milestone_add.this )
+                .setView(taskEditText)
+                .setPositiveButton( "Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String task = String.valueOf(taskEditText.getText());
+                        if(!task.trim().isEmpty()) {
+                            milestoneAdapter.add(task);
+                            // Adding to DB
+
+                            SQLiteDatabase db = mHelper.getWritableDatabase();
+                            ContentValues values = new ContentValues();
+                            values.put(TaskContract.TaskEntry.MILESTONETITLE, task);
+                            values.put(TaskContract.TaskEntry.MGOALID, goalID);
+                            values.put(TaskContract.TaskEntry.MILESTONEDONE, 0);
+                            db.insertWithOnConflict(TaskContract.TaskEntry.MILESTONE,
+                                    null,
+                                    values,
+                                    SQLiteDatabase.CONFLICT_REPLACE);
+                            db.close();
+                            updateUI();
+                        }
+                        //lvItems.setAdapter(milestoneAdapter);
+                        Log.d( "AlertDialog", "Positive" );
+                    }
+                })
+                .setNegativeButton( "Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d( "AlertDialog", "Negative" );
+
+                        SQLiteDatabase remove_db = mHelper.getWritableDatabase();
+                        remove_db.execSQL("delete from " + TaskContract.TaskEntry.MILESTONE +
+                                " where _id =" + goalID.toString());
+                        remove_db.close();
+                        updateUI();
+                        //milestone.remove(pos);
+                        //lvItems.setAdapter(milestoneAdapter);
+                    }
+                } )
+                .show();
+        TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.title);
+        Log.d(TAG,"dialogtitle"+dialogTitle);
+        Button save = (Button) dialog.findViewById(android.R.id.button1);
+        save.setTypeface(custom_font);
+        Button delete = (Button) dialog.findViewById(android.R.id.button2);
+        delete.setTypeface(custom_font);
+        Button completed = (Button) dialog.findViewById(android.R.id.button3);
+        completed.setTypeface(custom_font);
+
+    }
     @Override
     public void onPause() {
         if (mAdView != null) {
@@ -277,8 +333,6 @@ public class milestone_add extends AppCompatActivity {
         // Get and Set Reasons from DB
         getReasonFromDB();
 
-
-
         cursor.close();
         db.close();
         Log.d(TAG,"endof UI");
@@ -323,7 +377,7 @@ public class milestone_add extends AppCompatActivity {
 
     }
 
-    public void onAddMilestone(View v) {
+    /*public void onAddMilestone(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewMilestone);
         String task = etNewItem.getText().toString().trim();
         if(!task.trim().isEmpty()) {
@@ -344,7 +398,7 @@ public class milestone_add extends AppCompatActivity {
         }
         updateUI();
         etNewItem.setText("");
-    }
+    }*/
 
     private void milestonlistener(){
         Log.d(TAG,"milestone listner");
