@@ -129,12 +129,12 @@ public class milestone_add extends AppCompatActivity {
                             updateUI();
                         }
                         //lvItems.setAdapter(milestoneAdapter);
-                        Log.d( "AlertDialog", "Positive" );
+                        //Log.d( "AlertDialog", "Positive" );
                     }
                 })
                 .setNegativeButton( "Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d( "AlertDialog", "Negative" );
+                        //Log.d( "AlertDialog", "Negative" );
 
                         SQLiteDatabase remove_db = mHelper.getWritableDatabase();
                         remove_db.execSQL("delete from " + TaskContract.TaskEntry.MILESTONE +
@@ -147,31 +147,17 @@ public class milestone_add extends AppCompatActivity {
                 } )
                 .show();
         TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.title);
-        Log.d(TAG,"dialogtitle"+dialogTitle);
+        //Log.d(TAG,"dialogtitle"+dialogTitle);
         Button save = (Button) dialog.findViewById(android.R.id.button1);
         save.setTypeface(custom_font);
         Button delete = (Button) dialog.findViewById(android.R.id.button2);
         delete.setTypeface(custom_font);
         Button completed = (Button) dialog.findViewById(android.R.id.button3);
         completed.setTypeface(custom_font);
-        startNotification();
+
 
     }
 
-    public void startNotification(){
-        notification = new NotificationCompat.Builder(milestone_add.this);
-        notification.setContentTitle("Goal Planner");
-        notification.setContentText("Remeber your goal!!!.");
-        notification.setTicker("Work towards your goal!");
-        notification.setSmallIcon(getNotificationIcon());
-        stackBuilder = TaskStackBuilder.create(milestone_add.this);
-        resultIntent = new Intent(milestone_add.this,MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        pIntent =  stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pIntent);
-        manager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, notification.build());
-    }
 
 
     //Notification Icon need to have new silhouette
@@ -215,7 +201,7 @@ public class milestone_add extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
-                Log.d(TAG, "Add a new task");
+                //Log.d(TAG, "Add a new task");
                 EditText etNewItem = (EditText) findViewById(R.id.ewhy);
 
                 String reason = etNewItem.getText().toString().trim();
@@ -271,7 +257,7 @@ public class milestone_add extends AppCompatActivity {
 
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
-        Log.d(TAG,"goalid"+goalID.toString());
+        //Log.d(TAG,"goalid"+goalID.toString());
 
         Cursor cursor = db.query(TaskContract.TaskEntry.GOALDETAIL,
                 new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.REASON,
@@ -281,7 +267,7 @@ public class milestone_add extends AppCompatActivity {
 
         while(cursor.moveToNext()) {
             int idt = cursor.getColumnIndex(TaskContract.TaskEntry.REASON);
-            Log.d(TAG, "idt" + idt);
+            //Log.d(TAG, "idt" + idt);
             reason = cursor.getString(idt);
             idt = cursor.getColumnIndex(TaskContract.TaskEntry.EFFORT);
             effort = cursor.getString(idt);
@@ -289,7 +275,7 @@ public class milestone_add extends AppCompatActivity {
             okResult = cursor.getString(idt);
             idt = cursor.getColumnIndex(TaskContract.TaskEntry.NGRESULT);
             ngResult = cursor.getString(idt);
-            Log.d(TAG, "reason" + reason + "effort" + effort);
+            //Log.d(TAG, "reason" + reason + "effort" + effort);
         }
 
         EditText etNewItem = (EditText) findViewById(R.id.ewhy);
@@ -350,7 +336,7 @@ public class milestone_add extends AppCompatActivity {
             int idd = cursor.getColumnIndex(TaskContract.TaskEntry.MILESTONEDONE);
             pos_done_map.put(row, cursor.getInt(idd));
             row++;
-            Log.d(TAG, "row" + pos_id_map);
+            //Log.d(TAG, "row" + pos_id_map);
 
         }
 
@@ -394,7 +380,7 @@ public class milestone_add extends AppCompatActivity {
 
         cursor.close();
         db.close();
-        Log.d(TAG,"endof UI");
+        //Log.d(TAG,"endof UI");
     }
 
 
@@ -403,7 +389,7 @@ public class milestone_add extends AppCompatActivity {
         Intent intent = getIntent();
 
         goalID = intent.getIntExtra("ID",0);
-        Log.d("ID", "ID"+goalID);
+        //Log.d("ID", "ID"+goalID);
 
         // DB operations
 
@@ -460,7 +446,7 @@ public class milestone_add extends AppCompatActivity {
     }*/
 
     private void milestonlistener(){
-        Log.d(TAG,"milestone listner");
+        //Log.d(TAG,"milestone listner");
         lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
@@ -487,12 +473,12 @@ public class milestone_add extends AppCompatActivity {
                                             update_db.close();
                                         }
                                         //lvItems.setAdapter(milestoneAdapter);
-                                        Log.d( "AlertDialog", "Positive" );
+                                        //Log.d( "AlertDialog", "Positive" );
                                     }
                                 })
                                 .setNegativeButton( "Delete", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Log.d( "AlertDialog", "Negative" );
+                                        //Log.d( "AlertDialog", "Negative" );
 
                                         SQLiteDatabase remove_db = mHelper.getWritableDatabase();
                                         remove_db.execSQL("delete from " + TaskContract.TaskEntry.MILESTONE +
@@ -505,7 +491,7 @@ public class milestone_add extends AppCompatActivity {
                                 } )
                                 .show();
                         TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.title);
-                        Log.d(TAG,"dialogtitle"+dialogTitle);
+                        //Log.d(TAG,"dialogtitle"+dialogTitle);
                         Button save = (Button) dialog.findViewById(android.R.id.button1);
                         save.setTypeface(custom_font);
                         Button delete = (Button) dialog.findViewById(android.R.id.button2);
@@ -521,7 +507,7 @@ public class milestone_add extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapter,
                                             View item, final int pos, long id) {
-                        Log.d(TAG,"inside milestone click");
+                        //Log.d(TAG,"inside milestone click");
                         //Logic to strike through
                         SQLiteDatabase update_db = mHelper.getWritableDatabase();
 

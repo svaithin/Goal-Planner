@@ -37,15 +37,7 @@ import com.labs.svaithin.goalplanner_v0_01.db.TaskDbHelper;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
-import static android.R.attr.animationDuration;
-import static android.R.attr.button;
-import static android.R.attr.dialogTitle;
-import static android.R.attr.id;
-import static android.R.attr.title;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,45 +82,28 @@ public class MainActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new com.google.android.gms.common.api.GoogleApiClient.Builder(this).addApi(com.google.android.gms.appindexing.AppIndex.API).build();
 
-        //Add
-        /*mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);*/
-
-        /*
-        //Set notification firing mechanism
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 22);
-        calendar.set(Calendar.SECOND, 00);
-
-        Intent intent1 = new Intent(MainActivity.this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this,0,intent1,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(MainActivity.this.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-        Log.d(TAG,"Calender set");
-        */
-
         setNotification();
 
     }
 
     public void setNotification(){
 
-        Log.d(TAG,"set Notification");
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
         notificationIntent.addCategory("android.intent.category.DEFAULT");
 
-        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent broadcast = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar cal = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
         cal.set(Calendar.HOUR_OF_DAY, 6);
         cal.set(Calendar.MINUTE, 01);
         cal.set(Calendar.SECOND, 00);
+        if (now.after(cal)) {
+            cal.add(Calendar.DATE, 1);
+        }
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),AlarmManager.INTERVAL_DAY, broadcast);
 
     }
@@ -265,9 +240,9 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String goalTitle = etNewItem.getText().toString().trim();
-        Log.d(TAG,"goal:"+goalTitle.isEmpty());
+
         if(!goalTitle.isEmpty()) {
-            Log.d(TAG,"goalemplty:"+goalTitle);
+            //Log.d(TAG,"goalemplty:"+goalTitle);
             SQLiteDatabase db = mHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(TaskContract.TaskEntry.GOALTITLE, goalTitle);
@@ -295,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                         taskEditText.setTypeface(custom_font);
                         taskEditText.setTextColor(Color.BLACK);
                         taskEditText.setHint("Goal");
-                        Log.d(TAG,"edit text:"+items.get(pos));
+                        //Log.d(TAG,"edit text:"+items.get(pos));
                         String completeButtonName = new String();
                         if (doneMap.get(pos) == 0) {
                             completeButtonName = "Completed";
@@ -367,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
 
                         TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.title);
-                        Log.d(TAG,"dialogtitle"+dialogTitle);
+                        //Log.d(TAG,"dialogtitle"+dialogTitle);
                         Button save = (Button) dialog.findViewById(android.R.id.button1);
                         save.setTypeface(custom_font);
                         Button delete = (Button) dialog.findViewById(android.R.id.button2);

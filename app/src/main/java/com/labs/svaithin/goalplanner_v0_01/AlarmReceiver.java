@@ -26,6 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.d("alarmreceiver",context.toString());
         notification = new NotificationCompat.Builder(context);
         notification.setContentTitle("Goal Planner");
         notification.setContentText("Conquer your Goal");
