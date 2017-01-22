@@ -1,6 +1,9 @@
 package com.labs.svaithin.goalplanner_v0_01;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,6 +27,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.support.v4.app.NotificationCompat;
+import android.app.TaskStackBuilder;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,7 +40,9 @@ import java.util.HashMap;
 
 import static android.R.attr.dialogTitle;
 import static android.R.attr.resizeable;
+import static android.os.Build.VERSION_CODES.M;
 import static com.labs.svaithin.goalplanner_v0_01.R.id.etNewItem;
+import static com.labs.svaithin.goalplanner_v0_01.R.id.textView;
 
 public class milestone_add extends AppCompatActivity {
 
@@ -55,6 +62,11 @@ public class milestone_add extends AppCompatActivity {
     private String effort;
     private String okResult;
     private String ngResult;
+    NotificationCompat.Builder notification;
+    TaskStackBuilder stackBuilder;
+    Intent resultIntent;
+    PendingIntent pIntent;
+    NotificationManager manager;
 
 
     @Override
@@ -142,8 +154,32 @@ public class milestone_add extends AppCompatActivity {
         delete.setTypeface(custom_font);
         Button completed = (Button) dialog.findViewById(android.R.id.button3);
         completed.setTypeface(custom_font);
+        startNotification();
 
     }
+
+    public void startNotification(){
+        notification = new NotificationCompat.Builder(milestone_add.this);
+        notification.setContentTitle("Goal Planner");
+        notification.setContentText("Remeber your goal!!!.");
+        notification.setTicker("Work towards your goal!");
+        notification.setSmallIcon(getNotificationIcon());
+        stackBuilder = TaskStackBuilder.create(milestone_add.this);
+        resultIntent = new Intent(milestone_add.this,MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        pIntent =  stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pIntent);
+        manager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, notification.build());
+    }
+
+
+    //Notification Icon need to have new silhouette
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
+    }
+
     @Override
     public void onPause() {
         if (mAdView != null) {
@@ -181,6 +217,7 @@ public class milestone_add extends AppCompatActivity {
             case R.id.action_add_task:
                 Log.d(TAG, "Add a new task");
                 EditText etNewItem = (EditText) findViewById(R.id.ewhy);
+
                 String reason = etNewItem.getText().toString().trim();
                 SQLiteDatabase db = mHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
@@ -269,6 +306,18 @@ public class milestone_add extends AppCompatActivity {
 
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
+        TextView tv = (TextView) findViewById(R.id.goal);
+        tv.setTextColor(Color.GRAY);
+        tv =(TextView) findViewById(R.id.why);
+        tv.setTextColor(Color.BLACK);
+        tv =(TextView) findViewById(R.id.tEffert);
+        tv.setTextColor(Color.BLACK);
+        tv =(TextView) findViewById(R.id.textView5);
+        tv.setTextColor(Color.BLACK);
+        tv =(TextView) findViewById(R.id.textView);
+        tv.setTextColor(Color.BLACK);
+        tv = (TextView) findViewById(R.id.textView7);
+        tv.setTextColor(Color.GRAY);
 
         if(lvItems ==null) {
             lvItems = (ListView) findViewById(R.id.lvItems1);
@@ -338,6 +387,7 @@ public class milestone_add extends AppCompatActivity {
         milestoneAdapter.clear();
         milestoneAdapter.addAll(taskList);
         milestoneAdapter.notifyDataSetChanged();
+
 
         // Get and Set Reasons from DB
         getReasonFromDB();

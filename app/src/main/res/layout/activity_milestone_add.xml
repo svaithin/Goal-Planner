@@ -31,6 +31,7 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/ewhy"
+        android:hint="Why do you want to pursue this goal"
         android:layout_below="@+id/goal"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/why"
         android:textSize="14sp"
+        android:gravity="center"
         android:layout_below="@+id/goal"
         android:layout_above="@+id/tEffert" />
 
@@ -55,8 +57,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/eEffert"
+
         android:layout_above="@+id/editText3"
         android:layout_alignRight="@+id/why"
+        android:gravity="center"
         android:layout_alignEnd="@+id/why" />
 
     <EditText
@@ -66,13 +70,14 @@
         android:ems="10"
         android:id="@+id/eEffert"
         android:layout_below="@+id/ewhy"
+        android:hint="Effort required to achive this goal"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/why"
         android:layout_toEndOf="@+id/why" />
 
     <TextView
-        android:text="If Successful"
+        android:text="+ve Impact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView5"
@@ -81,6 +86,7 @@
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/eEffert"
         android:layout_toStartOf="@+id/eEffert"
+        android:gravity="center"
         android:layout_alignBottom="@+id/editText3" />
 
     <EditText
@@ -91,6 +97,7 @@
         android:id="@+id/editText3"
         android:layout_below="@+id/eEffert"
         android:layout_alignParentRight="true"
+        android:hint="Impact when goal is achieved"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/tEffert"
         android:layout_toEndOf="@+id/tEffert" />
@@ -106,7 +113,6 @@
         android:layout_below="@+id/button2" />
 
     <TextView
-        android:text="If Failed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -114,8 +120,11 @@
         android:id="@+id/textView"
         android:layout_toLeftOf="@+id/editText3"
         android:layout_toStartOf="@+id/editText3"
+
         android:layout_below="@+id/textView5"
-        android:layout_alignBottom="@+id/editText" />
+        android:gravity="center"
+        android:layout_alignBottom="@+id/editText"
+        android:text="-ve Impact" />
 
     <TextView
         android:text="Milestones"
@@ -126,6 +135,7 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+
         android:layout_toLeftOf="@+id/button2"
         android:layout_toStartOf="@+id/button2"
         android:layout_above="@+id/lvItems1" />
@@ -146,7 +156,8 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editText"
-        android:layout_below="@+id/textView5"
+        android:hint="Impact when failed to goal achieved"
+        android:layout_below="@+id/editText3"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/textView5"
