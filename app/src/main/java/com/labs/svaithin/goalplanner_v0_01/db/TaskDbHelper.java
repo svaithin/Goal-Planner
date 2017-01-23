@@ -50,7 +50,7 @@ public class TaskDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(newVersion == 2){
+        if(newVersion == 2 && oldVersion == 1){
 
             String createTable = "CREATE TABLE " + TaskContract.TaskEntry.GOALDETAIL + " ( " +
                     TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

@@ -109,8 +109,8 @@
         android:divider="@null"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/etNewMilestone"
-        android:layout_below="@+id/button2" />
+        android:layout_below="@+id/button2"
+        android:layout_above="@+id/adView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,11 +156,23 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editText"
-        android:hint="Impact when failed to goal achieved"
+        android:hint="Impact when failed to achieved goal"
         android:layout_below="@+id/editText3"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/textView5"
         android:layout_toEndOf="@+id/textView5" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_home_footer"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

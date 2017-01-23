@@ -43,6 +43,7 @@ import static android.R.attr.resizeable;
 import static android.os.Build.VERSION_CODES.M;
 import static com.labs.svaithin.goalplanner_v0_01.R.id.etNewItem;
 import static com.labs.svaithin.goalplanner_v0_01.R.id.textView;
+import static com.labs.svaithin.goalplanner_v0_01.db.TaskContract.TaskEntry.NGRESULT;
 
 public class milestone_add extends AppCompatActivity {
 
@@ -95,10 +96,10 @@ public class milestone_add extends AppCompatActivity {
         milestonlistener();
 
         //Add admob
-        /*mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
-        mAdView.loadAd(adRequest);*/
+        mAdView.loadAd(adRequest);
     }
 
 
@@ -231,7 +232,7 @@ public class milestone_add extends AppCompatActivity {
                 EditText ngimpact = (EditText)findViewById(R.id.editText);
                 String ngres = ngimpact.getText().toString().trim();
                 if(!ngres.trim().isEmpty()){
-                    values.put(TaskContract.TaskEntry.NGRESULT,ngres);
+                    values.put(NGRESULT,ngres);
                     valid=1;
                 }
 
@@ -244,6 +245,8 @@ public class milestone_add extends AppCompatActivity {
                     db.close();
                 }
 
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
 
                 return true;
 
@@ -261,7 +264,7 @@ public class milestone_add extends AppCompatActivity {
 
         Cursor cursor = db.query(TaskContract.TaskEntry.GOALDETAIL,
                 new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.REASON,
-                        TaskContract.TaskEntry.DGOALID,TaskContract.TaskEntry.NGRESULT,
+                        TaskContract.TaskEntry.DGOALID, NGRESULT,
                         TaskContract.TaskEntry.EFFORT, TaskContract.TaskEntry.OKRESULT},
                 ""+TaskContract.TaskEntry.DGOALID+" = ?",new String[]{goalID.toString()}, null, null, null);
 
@@ -273,7 +276,7 @@ public class milestone_add extends AppCompatActivity {
             effort = cursor.getString(idt);
             idt = cursor.getColumnIndex(TaskContract.TaskEntry.OKRESULT);
             okResult = cursor.getString(idt);
-            idt = cursor.getColumnIndex(TaskContract.TaskEntry.NGRESULT);
+            idt = cursor.getColumnIndex(NGRESULT);
             ngResult = cursor.getString(idt);
             //Log.d(TAG, "reason" + reason + "effort" + effort);
         }

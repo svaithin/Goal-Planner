@@ -28,7 +28,6 @@
             android:theme="@android:style/Theme.Translucent" />
 
 
-
         <receiver android:name=".AlarmReceiver">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
